@@ -5,9 +5,12 @@ app.use(cors());
 const server = require('http').createServer(app);
 // const {Server} = require("socket.io")
 
+const port = process.env.PORT || 3001
+
+
 const io = require("socket.io")(server,{
     cors:{
-        origin:"*",
+        origin:["*", "https://642dfb0b0e7fec191fc863a3--phenomenal-mandazi-8beb83.netlify.app"],
         methods: ["GET", "POST", "PUT", "DELETE"]
     }
 })
@@ -36,6 +39,6 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(3001, ()=>console.log("Server starting on port 3001"));
+server.listen(port, ()=>console.log(`Server starting on port ${port}`));
 
 instrument(io, { auth: false });

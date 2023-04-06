@@ -11,6 +11,7 @@ const port = process.env.PORT || 3001
 const io = require("socket.io")(server,{
     cors:{
         origin:"https://phenomenal-mandazi-8beb83.netlify.app",
+        // origin: "*",
         methods: ["GET", "POST", "PUT", "DELETE"]
     }
 })
@@ -27,16 +28,15 @@ io.on('connection', (socket) => {
     });
 
     socket.on("send_message", (data) => {
+        console.log(`User ${data.author} sent the message ${JSON.stringify(data)}`);
         socket.to(data.room).emit("receive_message", data);
-      });
+    });
 
     socket.on("disconnect", () => {
         console.log("user disconnected");
         counterConnection--;
         io.emit("user_count", counterConnection);
     });
-
-
 });
 
 server.listen(port, ()=>console.log(`Server starting on port ${port}`));
